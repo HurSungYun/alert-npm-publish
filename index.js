@@ -38,20 +38,37 @@ const cronHandler = () => {
     for (const pkgName in pkgMap) {
       const pkgVersion = pkgMap[pkgName];
       const p = new Promise((resolve, reject) => {
-        exec('npm dist-tag ls ' + pkgName, (err, stdout) => {
-          if (err) {
-            // node couldn't execute the command
-            reject(err);
-            return;
-          }
-          const tagAndVersions = stdout.split('\n').map(elem => elem.split(': '));
-          const latestVersion = tagAndVersions.find(elem => elem[0] === 'latest')[1];
-          if (latestVersion !== pkgVersion) {
-            alert(pkgName, latestVersion);
-            pkgMap[pkgName] = latestVersion;
-          }
-          resolve();
+        const req = https.request({
+          host: 'registry.npmjs.org',
+          path: '/-/package/' + pkgName + '/dist-tags',
+          method: 'GET',
+        }, (res) => {
+          res.setEncoding('utf8');
+          let body = '';
+          res.on('data', (chunk) => {
+            body += chunk;
+          });
+          res.on('end', () => {
+            let obj = {};
+            try {
+              obj = JSON.parse(body);
+            } catch (e) {
+              logErrorAndExit(err);
+              return;
+            }
+            const latestVersion = obj.latest;
+            if (latestVersion !== pkgVersion) {
+              alert(pkgName, latestVersion);
+              pkgMap[pkgName] = latestVersion;
+            }
+            resolve();
+          });
         });
+        req.on('error', (e) => {
+          console.log('problem with request: ' + e.message);
+          reject(e);
+        });
+        req.end();
       });
       promises.push(p);
     }
@@ -81,7 +98,7 @@ function alert(pkgName, latestVersion) {
     console.log('Status: ' + res.statusCode);
     console.log('Headers: ' + JSON.stringify(res.headers));
   });
-  req.on('error', function (e) {
+  req.on('error', (e) => {
     console.log('problem with request: ' + e.message);
   });
   req.write(body);
