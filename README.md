@@ -2,6 +2,8 @@
 
 alert when new version of whitelisted packaged is published
 
+![Screenshot](example.PNG)
+
 ### example
 
 ```
