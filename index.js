@@ -19,7 +19,7 @@ const schedule = cronSchedule[process.argv[2]] || cronSchedule.h;
 const dataPath = process.argv[3] || './data.json';
 
 const cronHandler = () => {
-  fs.readFile(dataPath, 'utf8', function (err, contents) {
+  fs.readFile(dataPath, 'utf8', async (err, contents) => {
     if (err) {
       logErrorAndExit(err);
     }
@@ -34,10 +34,9 @@ const cronHandler = () => {
     for (const pkgName in parsedData) {
       pkgMap[pkgName] = parsedData[pkgName];
     }
-    const promises = [];
     for (const pkgName in pkgMap) {
       const pkgVersion = pkgMap[pkgName];
-      const p = new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => {
         const req = https.request({
           host: 'registry.npmjs.org',
           path: '/-/package/' + pkgName + '/dist-tags',
@@ -73,13 +72,10 @@ const cronHandler = () => {
         });
         req.end();
       });
-      promises.push(p);
     }
-    Promise.all(promises).then(() => {
-      console.log('end at ' + Date.now());
-      const jsonPrettified = JSON.stringify(pkgMap, null, 2);
-      fs.writeFile(dataPath, jsonPrettified, (err) => err ? logErrorAndExit(err) : null);
-    }).catch(err => logErrorAndExit(err));
+    console.log('end at ' + Date.now());
+    const jsonPrettified = JSON.stringify(pkgMap, null, 2);
+    fs.writeFile(dataPath, jsonPrettified, (err) => err ? logErrorAndExit(err) : null);
   });
 }
 
