@@ -12,8 +12,8 @@ const cronSchedule = {
   d: '0 0 0 * * *',
 };
 
-const webhookURL = process.env.webhook_url || '';
-const webhookType = process.env.webhook_type || 'discord';
+const webhookURL = process.env.WEBHOOK_URL || '';
+const webhookType = process.env.WEBHOOK_TYPE || 'discord';
 
 const schedule = cronSchedule[process.argv[2]] || cronSchedule.h;
 const dataPath = process.argv[3] || './data.json';
