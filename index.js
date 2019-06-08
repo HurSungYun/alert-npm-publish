@@ -43,6 +43,9 @@ const cronHandler = () => {
           path: '/-/package/' + pkgName + '/dist-tags',
           method: 'GET',
         }, (res) => {
+          if (res.statusCode !== 200) {
+            logErrorAndExit('problem with package: ' + pkgName);
+          }
           res.setEncoding('utf8');
           let body = '';
           res.on('data', (chunk) => {
