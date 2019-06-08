@@ -4,10 +4,19 @@ const cron = require('node-cron');
 const fs = require('fs');
 const { exec } = require('child_process');
 
+const cronSchedule = {
+  m: '0 * * * * *',
+  h: '0 0 * * * *',
+  d: '0 0 0 * * *',
+};
+
+const schedule = cronSchedule[process.argv[2]] || cronSchedule.h;
+const dataPath = process.argv[3] || './data.json';
+
 console.log('started');
 
-cron.schedule('*/5 * * * * *', () => {
-  fs.readFile('./data.json', 'utf8', function (err, contents) {
+cron.schedule(schedule, () => {
+  fs.readFile(dataPath, 'utf8', function (err, contents) {
     if (err) {
       logErrorAndExit(err);
     }
@@ -45,7 +54,7 @@ cron.schedule('*/5 * * * * *', () => {
     }
     Promise.all(promises).then(() => {
       const jsonPrettified = JSON.stringify(pkgMap, null, 2);
-      fs.writeFile('./data.json', jsonPrettified, (err) => err ? logErrorAndExit(err) : null);
+      fs.writeFile(dataPath, jsonPrettified, (err) => err ? logErrorAndExit(err) : null);
     }).catch(err => logErrorAndExit(err));
   })
 });

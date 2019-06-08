@@ -1,7 +1,7 @@
 {
-  "name": "npm-pkg-alert",
+  "name": "alert-npm-publish",
   "version": "1.0.0",
-  "description": "pull npm pkg update alert",
+  "description": "alert when npm pkg is published",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
