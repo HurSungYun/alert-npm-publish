@@ -6,13 +6,14 @@ const https = require('https');
 const alerts = require('./alerts/index');
 
 const cronSchedule = {
-  m: '0 * * * * *',
   h: '0 0 * * * *',
   d: '0 0 0 * * *',
 };
 
+const argv = require('minimist')(process.argv.slice(2)); // type(t), cron(c), file(f)
+
 const webhookURL = process.env.WEBHOOK_URL || '';
-const webhookType = process.argv[2] || 'discord';
+const webhookType = argv.type || argv.t || '';
 
 const alertFunc = alerts[webhookType];
 
@@ -21,8 +22,8 @@ if (!alertFunc) {
   process.exit(1);
 }
 
-const schedule = cronSchedule[process.argv[3]] || cronSchedule.h;
-const dataPath = process.argv[4] || './data.json';
+const schedule = cronSchedule[argv.cron] || argv.cron || argv.c || cronSchedule.h;
+const dataPath = argv.file || argv.f || './data.json';
 
 const cronHandler = () => {
   fs.readFile(dataPath, 'utf8', async (err, contents) => {
