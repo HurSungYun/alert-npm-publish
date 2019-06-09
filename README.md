@@ -10,7 +10,7 @@ support Node.js 10+
 ### example
 
 ```
-WEBHOOK_URL=<your_webhook_url> node index.js -t slack -c "0 0 0 * * *" -f ./watchlist.json
+WEBHOOK_URL=<your_webhook_url> node index.js -t slack -c "0 0 0 * * *" -f ./example/watchlist.json
 ```
 
 you can customize your `watchlist.json`.

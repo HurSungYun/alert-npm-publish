@@ -23,7 +23,7 @@ if (!alertFunc) {
 }
 
 const schedule = cronSchedule[argv.cron] || cronSchedule[argv.c] || argv.cron || argv.c || cronSchedule.h;
-const dataPath = argv.file || argv.f || './watchlist.json';
+const dataPath = argv.file || argv.f || './example/watchlist.json';
 
 let raceFlag = false;
 
