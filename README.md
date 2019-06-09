@@ -1,11 +1,13 @@
 # alert-npm-publish
 
-alert when new version of whitelisted packaged is published
+alert when new version of whitelisted package is published
 
 ![Screenshot](example.PNG)
+
+support Node.js 10+
 
 ### example
 
 ```
-node index.js m ./data.json
+WEBHOOK_URL=<your_webhook_url> node index.js discord h ./data.json
 ```
