@@ -22,7 +22,7 @@ if (!alertFunc) {
   process.exit(1);
 }
 
-const schedule = cronSchedule[argv.cron] || argv.cron || argv.c || cronSchedule.h;
+const schedule = cronSchedule[argv.cron] || cronSchedule[argv.c] || argv.cron || argv.c || cronSchedule.h;
 const dataPath = argv.file || argv.f || './watchlist.json';
 
 let raceFlag = false;
