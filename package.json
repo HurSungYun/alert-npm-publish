@@ -1,13 +1,13 @@
 {
   "name": "alert-npm-publish",
-  "version": "1.0.0",
-  "description": "alert when npm pkg is published",
+  "version": "0.1.0",
+  "description": "alert when npm package is published",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "ethan0311@gmail.com",
+  "license": "MIT",
   "dependencies": {
     "minimist": "^1.2.0",
     "node-cron": "^2.0.3"
