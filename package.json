@@ -11,5 +11,9 @@
   "dependencies": {
     "minimist": "^1.2.0",
     "node-cron": "^2.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HurSungYun/alert-npm-publish.git"
   }
 }
