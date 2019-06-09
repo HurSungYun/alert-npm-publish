@@ -25,7 +25,14 @@ if (!alertFunc) {
 const schedule = cronSchedule[argv.cron] || argv.cron || argv.c || cronSchedule.h;
 const dataPath = argv.file || argv.f || './data.json';
 
+let raceFlag = false;
+
 const cronHandler = () => {
+  if (raceFlag) {
+    console.error('skip due to race: ' + Date.now());
+    return;
+  }
+  raceFlag = true;
   fs.readFile(dataPath, 'utf8', async (err, contents) => {
     if (err) {
       logErrorAndExit(err);
@@ -83,6 +90,7 @@ const cronHandler = () => {
     console.log('end at ' + Date.now());
     const jsonPrettified = JSON.stringify(pkgMap, null, 2);
     fs.writeFile(dataPath, jsonPrettified, (err) => err ? logErrorAndExit(err) : null);
+    raceFlag = false;
   });
 }
 
